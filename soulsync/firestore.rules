@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Reusable hardened global helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Validation helper for UserProfile
+    function isValidUserProfile(data) {
+      return data.keys().hasAll(['id', 'name'])
+        && data.id is string && data.id.size() <= 128
+        && data.name is string && data.name.size() <= 100
+        && (!data.keys().contains('bio') || (data.bio is string && data.bio.size() <= 2000))
+        && (!data.keys().contains('avatar') || (data.avatar is string && data.avatar.size() <= 1000))
+        && (!data.keys().contains('gender') || (data.gender is string && data.gender.size() <= 50))
+        && (!data.keys().contains('location') || (data.location is string && data.location.size() <= 200))
+        && (!data.keys().contains('relationshipGoals') || (data.relationshipGoals is string && data.relationshipGoals.size() <= 100))
+        && (!data.keys().contains('personalityType') || (data.personalityType is string && data.personalityType.size() <= 10))
+        && (!data.keys().contains('loveLanguage') || (data.loveLanguage is string && data.loveLanguage.size() <= 100))
+        && (!data.keys().contains('mood') || (data.mood is string && data.mood.size() <= 100))
+        && (!data.keys().contains('age') || (data.age is number && data.age >= 18 && data.age <= 120))
+        && (!data.keys().contains('interests') || data.interests is list)
+        && (!data.keys().contains('favoriteMusic') || data.favoriteMusic is list)
+        && (!data.keys().contains('favoriteMovies') || data.favoriteMovies is list);
+    }
+
+    // Validation helper for Booking
+    function isValidBooking(data) {
+      return data.keys().hasAll(['id', 'userId', 'mentorName', 'serviceName', 'date', 'timeSlot'])
+        && data.id is string && data.id.size() <= 128
+        && data.userId is string && data.userId.size() <= 128
+        && data.userId == request.auth.uid
+        && data.mentorName is string && data.mentorName.size() <= 100
+        && data.serviceName is string && data.serviceName.size() <= 100
+        && data.date is string && data.date.size() <= 100
+        && data.timeSlot is string && data.timeSlot.size() <= 100
+        && (!data.keys().contains('notes') || (data.notes is string && data.notes.size() <= 2000))
+        && (!data.keys().contains('status') || (data.status is string && data.status.size() <= 100))
+        && (!data.keys().contains('createdAt') || data.createdAt is timestamp || data.createdAt is string);
+    }
+
+    // Users Collection rules
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUserProfile(request.resource.data);
+      allow update: if isOwner(userId) && isValidUserProfile(request.resource.data)
+                    && request.resource.data.id == resource.data.id; // immutable ID
+      allow delete: if isOwner(userId);
+    }
+
+    // Bookings Collection rules
+    match /bookings/{bookingId} {
+      // Secure List Queries
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      
+      allow create: if isSignedIn() && isValidId(bookingId) && isValidBooking(request.resource.data);
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid && isValidBooking(request.resource.data)
+                    && request.resource.data.userId == resource.data.userId; // immutable owner
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+  }
+}

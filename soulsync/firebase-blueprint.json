@@ -1,0 +1,54 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account registration and personality alignment traits.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "avatar": { "type": "string" },
+        "bio": { "type": "string" },
+        "age": { "type": "integer" },
+        "gender": { "type": "string" },
+        "location": { "type": "string" },
+        "interests": { "type": "array" },
+        "favoriteMusic": { "type": "array" },
+        "favoriteMovies": { "type": "array" },
+        "relationshipGoals": { "type": "string" },
+        "personalityType": { "type": "string" },
+        "loveLanguage": { "type": "string" },
+        "mood": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Appointment dates and timeslots for relationship counseling and custom synchronization slots.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "mentorName": { "type": "string" },
+        "serviceName": { "type": "string" },
+        "date": { "type": "string" },
+        "timeSlot": { "type": "string" },
+        "notes": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "mentorName", "serviceName", "date", "timeSlot"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores individual user characteristics."
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Stores appointment reservations in SouLSynC."
+    }
+  }
+}
