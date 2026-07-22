@@ -1,0 +1,6 @@
+{
+  "name": "SouLSynC",
+  "description": "An AI-powered love compatibility platform to discover your perfect emotional match through personality sync, couple quizzes, real-time chats, and AI-driven relationship insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
