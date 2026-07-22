@@ -3,190 +3,162 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useEffect, useRef } from "react";
+import { QuizQuestion, MatchProfile, PlaylistTrack } from "./types";
 
-interface SeededPetal {
-  x: number;
-  y: number;
-  size: number;
-  speedY: number;
-  speedX: number;
-  rotation: number;
-  rotationSpeed: number;
-  opacity: number;
-  oscillateSpeed: number;
-}
+export const COMPATIBILITY_QUESTIONS: QuizQuestion[] = [
+  {
+    id: "q1",
+    category: "Fun",
+    question: "What is your absolute perfect spontaneous date idea?",
+    options: [
+      "Stargazing in the bed of an open truck with blankets",
+      "An intense, high-energy arcade and laser-tag faceoff",
+      "Sneaking into a beautiful greenhouse during off-hours",
+      "Getting completely lost in an old vinyl record store"
+    ],
+    iconName: "Sparkles"
+  },
+  {
+    id: "q2",
+    category: "Deep Emotional",
+    question: "When you are going through heavy stress, how can a partner comfort you best?",
+    options: [
+      "Giving me deep physical touch (hugs, holding hand) in absolute silence",
+      "Listening closely and offering highly practical advice or solutions",
+      "Giving me complete quiet space but sliding a cozy snack to my desk",
+      "Validating my thoughts and telling me 'I have your back no matter what'"
+    ],
+    iconName: "HeartHandshake"
+  },
+  {
+    id: "q3",
+    category: "Relationship Goals",
+    question: "What does the ultimate shared workspace or life looks like for you?",
+    options: [
+      "A rustic cabin surrounded by pine trees, reading books by the fireplace",
+      "A high-rise cyberpunk metropolitan flat with neon lights and smart widgets",
+      "A fluid, nomadic camper-van lifestyle traveling across coasts every month",
+      "A warm suburban home filled with laughing animals, plants, and close friends"
+    ],
+    iconName: "Target"
+  },
+  {
+    id: "q4",
+    category: "Daily Habits",
+    question: "How do you recharge your social battery after an exhaustive work week?",
+    options: [
+      "Absolutely alone in active dark mode playing video games or binge watching",
+      "An intimate cozy dinner party with only 2 or 3 of my favorite humans",
+      "Wandering through raw nature, taking photographs, and feeling breeze",
+      "Throwing custom theme parties or attending electric local live shows"
+    ],
+    iconName: "Coffee"
+  },
+  {
+    id: "q5",
+    category: "Trust & Loyalty",
+    question: "If a boundary of yours is accidentally crossed, what is your conflict resolution style?",
+    options: [
+      "Cooling down completely before talking calmly under structured guidelines",
+      "Resolving it immediately on the spot, even if emotions are briefly hot",
+      "Writing a long, deeply honest letter explaining my feelings and perspectives",
+      "Cracking a joke to ease the tension and seeking light-hearted reconciliation"
+    ],
+    iconName: "Key"
+  },
+  {
+    id: "q6",
+    category: "Fun",
+    question: "Choose a movie genre that fits your emotional frequency on Sunday afternoon:",
+    options: [
+      "Chilling existential science-fiction (Interstellar, Arrival)",
+      "Cozy, nostalgic studio Ghibli anime with magical tea-making sequences",
+      "A clever, dark psychological thriller with multiple mind-bending twists",
+      "A warm, absolute classic indie-comedy romance with dry-witted characters"
+    ],
+    iconName: "Film"
+  },
+  {
+    id: "q7",
+    category: "Deep Emotional",
+    question: "What does Vulnerability mean to you in a loving connection?",
+    options: [
+      "Sharing my messy, unedited childhood memories and secret fears",
+      "Admitting immediately when I am wrong without feeling less loved",
+      "Crying together during emotional scenes without trying to make jokes",
+      "Entrusting the other with passwords, keys, and absolute financial trust"
+    ],
+    iconName: "Heart"
+  }
+];
 
-interface GlowingDot {
-  x: number;
-  y: number;
-  size: number;
-  speedY: number;
-  opacity: number;
-  pulseSpeed: number;
-  pulseTimer: number;
-}
+export const CANDIDATE_PROFILES: MatchProfile[] = [
+  {
+    id: "m1",
+    name: "Aria Sterling",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&auto=format&fit=crop&q=80",
+    age: 24,
+    bio: "Obsessed with cozy Ghibli soundtracks, rainy city skylines, and building custom mechanical keyboards. Seeking someone who can lose track of time in beautiful libraries.",
+    location: "Neo Seoul, Sector 4",
+    distance: "1.2 km away",
+    interests: ["Digital Art", "Vinyl Records", "Ghibli Movies", "Matcha Latte", "Cyberpunk Specs"],
+    personalityType: "INFJ",
+    relationshipGoals: "Soulmate Syncing",
+    compatibilityPercentage: 94,
+    mutualInterestsCount: 4,
+    gender: "Female"
+  },
+  {
+    id: "m2",
+    name: "Kaelen Vane",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80",
+    age: 26,
+    bio: "An active dark-theme developer who designs indie video games. Let's debate sci-fi lore over a plate of spicy ramen and fresh green tea. My cat approves of cool partners.",
+    location: "Zen City, Heights",
+    distance: "4.5 km away",
+    interests: ["Game Dev", "Spicy Ramen", "Retro Gaming", "Acoustic Pop", "Cats", "Interstellar"],
+    personalityType: "ENFP",
+    relationshipGoals: "Adventurous Partner",
+    compatibilityPercentage: 88,
+    mutualInterestsCount: 3,
+    gender: "Male"
+  },
+  {
+    id: "m3",
+    name: "Seraphina Lin",
+    avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&auto=format&fit=crop&q=80",
+    age: 25,
+    bio: "Landscape architect by day, ambient synthesizer compiler by night. I find absolute beauty in starry night camping and old film camera negatives. Let's capture the moon.",
+    location: "Bloomfield Valley",
+    distance: "9.1 km away",
+    interests: ["Analog Synths", "Stargazing", "Film Cameras", "Matcha Latte", "Hiking", "Vinyl Records"],
+    personalityType: "INTJ",
+    relationshipGoals: "Cozy Life Companion",
+    compatibilityPercentage: 91,
+    mutualInterestsCount: 5,
+    gender: "Female"
+  },
+  {
+    id: "m4",
+    name: "Julian Woods",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
+    age: 27,
+    bio: "Specialty coffee roaster who spends free days restoring old mid-century modern furniture. I believe loyalty and deep communication outweigh all superficial glitz.",
+    location: "Downtown Echoes",
+    distance: "3.2 km away",
+    interests: ["Coffee Brewing", "Jazz Classics", "Design Architecture", "Indie Folk", "Thrift Shopping"],
+    personalityType: "ENFJ",
+    relationshipGoals: "Growth Partnership",
+    compatibilityPercentage: 84,
+    mutualInterestsCount: 2,
+    gender: "Male"
+  }
+];
 
-export default function FallingPetals() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let petals: SeededPetal[] = [];
-    let dots: GlowingDot[] = [];
-    
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    // Initialize petals
-    const initElements = () => {
-      petals = Array.from({ length: 40 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height - canvas.height,
-        size: Math.random() * 12 + 8,
-        speedY: Math.random() * 0.8 + 0.6,
-        speedX: Math.random() * 0.4 - 0.2,
-        rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: Math.random() * 0.015 - 0.0075,
-        opacity: Math.random() * 0.45 + 0.35,
-        oscillateSpeed: Math.random() * 0.02 + 0.005,
-      }));
-
-      dots = Array.from({ length: 45 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 1.5 + 1.0,
-        speedY: Math.random() * 0.2 + 0.1,
-        opacity: Math.random() * 0.5 + 0.2,
-        pulseSpeed: Math.random() * 0.03 + 0.01,
-        pulseTimer: Math.random() * Math.PI * 2,
-      }));
-    };
-
-    initElements();
-
-    // Drawer function
-    const drawPetals = (petal: SeededPetal, time: number) => {
-      ctx.save();
-      // Add slight swaying motion
-      const swayX = Math.sin(time * petal.oscillateSpeed) * 1.2;
-      ctx.translate(petal.x + swayX, petal.y);
-      ctx.rotate(petal.rotation);
-
-      // Creative drawing of a rose petal
-      ctx.beginPath();
-      ctx.ellipse(0, 0, petal.size, petal.size * 0.7, 0, 0, Math.PI * 2);
-      ctx.closePath();
-
-      // Soft red, magenta glow gradient
-      const gradient = ctx.createLinearGradient(-petal.size, -petal.size, petal.size, petal.size);
-      gradient.addColorStop(0, `rgba(239, 68, 110, ${petal.opacity})`); // Pinkish red
-      gradient.addColorStop(0.5, `rgba(225, 29, 72, ${petal.opacity * 0.95})`); // Primary rose ruby
-      gradient.addColorStop(1, `rgba(159, 18, 57, ${petal.opacity * 0.7})`); // Dark cherry ruby
-
-      ctx.fillStyle = gradient;
-      
-      // Shadow/Glow effect on petal
-      ctx.shadowBlur = petal.size / 2;
-      ctx.shadowColor = "rgba(239, 68, 68, 0.4)";
-      ctx.fill();
-
-      // Petal center crease line
-      ctx.beginPath();
-      ctx.moveTo(-petal.size, 0);
-      ctx.quadraticCurveTo(0, petal.size * 0.1, petal.size, 0);
-      ctx.strokeStyle = `rgba(255, 120, 150, ${petal.opacity * 0.5})`;
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
-      ctx.restore();
-    };
-
-    const drawDot = (dot: GlowingDot) => {
-      ctx.save();
-      
-      // Pulsating glow dots
-      const dynamicOpacity = dot.opacity * (0.4 + 0.6 * Math.sin(dot.pulseTimer));
-      ctx.fillStyle = `rgba(244, 63, 94, ${dynamicOpacity})`; // Glowing rose
-      ctx.shadowBlur = dot.size * 4;
-      ctx.shadowColor = "rgba(244, 63, 94, 0.7)";
-      
-      ctx.beginPath();
-      ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    };
-
-    let lastTime = 0;
-    const animate = (time: number) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Render glowing soft warm background spots
-      const centerGrad = ctx.createRadialGradient(
-        canvas.width / 2, canvas.height / 2, canvas.width * 0.1,
-        canvas.width / 2, canvas.height / 2, canvas.width * 0.8
-      );
-      centerGrad.addColorStop(0, "rgba(20, 10, 25, 1)");
-      centerGrad.addColorStop(1, "rgba(8, 4, 12, 1)");
-      ctx.fillStyle = centerGrad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Render dots
-      dots.forEach((dot) => {
-        dot.y += dot.speedY;
-        dot.pulseTimer += dot.pulseSpeed;
-        if (dot.y > canvas.height) {
-          dot.y = -5;
-          dot.x = Math.random() * canvas.width;
-        }
-        drawDot(dot);
-      });
-
-      // Render petals
-      petals.forEach((petal) => {
-        petal.y += petal.speedY;
-        petal.x += petal.speedX;
-        petal.rotation += petal.rotationSpeed;
-
-        if (petal.y > canvas.height + 20) {
-          petal.y = -20;
-          petal.x = Math.random() * canvas.width;
-          petal.opacity = Math.random() * 0.45 + 0.35;
-        }
-
-        if (petal.x > canvas.width + 20) petal.x = -20;
-        else if (petal.x < -20) petal.x = canvas.width + 20;
-
-        drawPetals(petal, time);
-      });
-
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      window.removeEventListener("resize", resizeCanvas);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      id="cozy-background-canvas"
-      className="fixed inset-0 pointer-events-none z-0"
-    />
-  );
-}
+export const DEFAULT_TRACKS: PlaylistTrack[] = [
+  { id: "t1", title: "Midnight Whispers", artist: "Hologram Love", genre: "Chillwave", vibes: ["Dreamy", "Neon Glow"] },
+  { id: "t2", title: "Coffee & Rainbeats", artist: "Lo-Fi Soulmate", genre: "Cozy Beats", vibes: ["Warm", "Comforting"] },
+  { id: "t3", title: "Ethereal Echoes", artist: "Seraphina Synthesized", genre: "Ambient Synth", vibes: ["Deep", "Spiritual"] },
+  { id: "t4", title: "Sinking in Your Eyes", artist: "Cherry Ruby", genre: "Dream Pop", vibes: ["Romantic", "Sweeeet"] },
+  { id: "t5", title: "Acoustic Fireplace", artist: "Indie Meadow", genre: "Indie Folk", vibes: ["Intimate", "Nostalgic"] }
+];
